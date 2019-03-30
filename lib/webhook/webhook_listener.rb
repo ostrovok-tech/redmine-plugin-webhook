@@ -38,7 +38,7 @@ module Webhook
           begin
               url = Setting.plugin_webhook['url']
               if url.nil? || url == ''
-                  url = 'http://localhost:8000'
+                  raise 'Url is not defined for webhook plugin'
               end
               url = URI(url)
 	      headers = {
