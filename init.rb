@@ -1,4 +1,4 @@
-require_dependency 'hooks'
+require_dependency 'webhook'
 
 Redmine::Plugin.register :webhook do
   name 'Redmine Webhook Plugin'
