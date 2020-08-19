@@ -34,7 +34,7 @@ module Webhook
       return if skip_webhooks(context)
       controller = context[:controller]
       custom_field = context[:custom_field]
-      post(newcustomfield_to_json(custom_field, controller), 'fields')
+      post(newcustomfield_to_json(custom_field, controller), 'cf_')
     end
 
     private
@@ -71,14 +71,14 @@ module Webhook
       }
     end
 
-    def post(request_body, suffix = nil)
+    def post(request_body, prefix = nil)
       Thread.start do
           begin
-              url = Setting.plugin_webhook['url']
+              url = prefix.nil? ? Setting.plugin_webhook['url'] : Setting.plugin_webhook[prefix + 'url']
               if url.nil? || url == ''
                   raise 'Url is not defined for webhook plugin'
               end
-              url = URI(url + (suffix ? '' : '/' + suffix))
+              url = URI(url)
 	      headers = {
                   'Content-Type' => 'application/json',
                   'X-Redmine-Event' => 'Edit Issue',
