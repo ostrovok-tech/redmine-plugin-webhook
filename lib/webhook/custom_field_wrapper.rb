@@ -6,7 +6,7 @@ module Webhook
 
 		def to_hash 
 			{
-				id: @custom_field.id
+				id: @custom_field.id,
 				name: @custom_field.name,
 				field_format: @custom_field.field_format
 			}
