@@ -68,7 +68,7 @@ module Webhook
           :action => 'created',
           :field => Webhook::CustomFieldWrapper.new(custom_field).to_hash
         }
-      }
+      }.to_json
     end
 
     def post(request_body, prefix = nil)
