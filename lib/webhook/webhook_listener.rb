@@ -21,6 +21,34 @@ module Webhook
       post(journal_to_json(issue, journal, controller))
     end
 
+    def controller_issues_new_after_save(context = {})
+      return if skip_webhooks(context)
+      controller = context[:controller]
+      issue = context[:issue]
+      project = issue.project
+      return unless project.module_enabled?('webhook')
+      post(newissue_to_json(issue, controller))
+    end
+
+    def controller_custom_fields_new_after_save(context = {})
+      return if skip_webhooks(context)
+      controller = context[:controller]
+      custom_field = context[:custom_field]
+      post(newcustomfield_to_json(custom_field, controller), 'fields')
+    end
+
+    private
+    def newissue_to_json(issue, controller)
+      {
+        :payload => {
+          :action => 'created',
+          :issue => Webhook::IssueWrapper.new(issue).to_hash,
+          :journal => nil,
+          :url => controller.issue_url(issue)
+        }
+      }.to_json
+    end
+
     private
     def journal_to_json(issue, journal, controller)
       {
@@ -33,14 +61,24 @@ module Webhook
       }.to_json
     end
 
-    def post(request_body)
+    private
+    def newcustomfield_to_json(custom_field, controller)
+      {
+        :payload => {
+          :action => 'created',
+          :field => Webhook::CustomFieldWrapper.new(custom_field).to_hash
+        }
+      }
+    end
+
+    def post(request_body, suffix = nil)
       Thread.start do
           begin
               url = Setting.plugin_webhook['url']
               if url.nil? || url == ''
                   raise 'Url is not defined for webhook plugin'
               end
-              url = URI(url)
+              url = URI(url + (suffix ? '' : '/' + suffix))
 	      headers = {
                   'Content-Type' => 'application/json',
                   'X-Redmine-Event' => 'Edit Issue',
