@@ -37,6 +37,13 @@ module Webhook
       post(newcustomfield_to_json(custom_field, controller), 'cf_')
     end
 
+    def controller_custom_fields_edit_after_save(context = {})
+      return if skip_webhooks(context)
+      controller = context[:controller]
+      custom_field = context[:custom_field]
+      post(editcustomfield_to_json(custom_field, controller), 'cf_')
+    end
+
     private
     def newissue_to_json(issue, controller)
       {
@@ -66,6 +73,16 @@ module Webhook
       {
         :payload => {
           :action => 'created',
+          :field => Webhook::CustomFieldWrapper.new(custom_field).to_hash
+        }
+      }.to_json
+    end
+
+    private
+    def editcustomfield_to_json(custom_field, controller)
+      {
+        :payload => {
+          :action => 'updated',
           :field => Webhook::CustomFieldWrapper.new(custom_field).to_hash
         }
       }.to_json
