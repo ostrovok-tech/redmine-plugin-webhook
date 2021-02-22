@@ -8,14 +8,16 @@ A plugin for Redmine which makes callback requests to specified URL when issue c
 - [Relevant ruby and rails versions](http://www.redmine.org/projects/redmine/wiki/redmineinstall)
 - This plugin does not have any other dependencies
 
-**Note**: this plugin was tested with Redmine 3.4.8
+**Note**: this plugin was tested with Redmine 3.4.4 and 3.4.8
 
 ## Installation
 
 1. `cd` into `plugins` folder
-2. `git clone` this repo
-3. Restart redmine server
-4. Now you should be able to see the plugin in **Administration > Plugins**.
+2. `git clone https://github.com/ostrovok-team/redmine-plugin-webhook.git webhook`
+4. Restart redmine server
+5. Now you should be able to see the plugin in **Administration > Plugins**.
+
+**Note**: it is important that the plugin directory is named `webhook`, otherwise it will not load. Prior to Redmine 4 plugin loading fails silently and you will see 404 on configuration page.
 
 ## Usage
 
@@ -139,5 +141,4 @@ Example payload on issue update:
 
 ## Maintainers
 
-Ivan Elfimov, [https://github.com/biozz](https://github.com/biozz)
-
+- [@biozz](https://github.com/biozz)
