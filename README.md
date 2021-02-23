@@ -13,11 +13,14 @@ A plugin for Redmine which makes callback requests to specified URL when issue c
 ## Installation
 
 1. `cd` into `plugins` folder
-2. `git clone https://github.com/ostrovok-team/redmine-plugin-webhook.git webhook`
+2. `git clone https://github.com/ostrovok-team/redmine-plugin-webhook.git --branch v1.0.0 webhook`
 4. Restart redmine server
 5. Now you should be able to see the plugin in **Administration > Plugins**.
 
-**Note**: it is important that the plugin directory is named `webhook`, otherwise it will not load. Prior to Redmine 4 plugin loading fails silently and you will see 404 on configuration page.
+**Notes**: 
+
+- it is important that the plugin directory is named `webhook`, otherwise it will not load. Prior to Redmine 4 plugin loading fails silently and you will see 404 on configuration page
+- please use tagged version of the library, because `master` branch might contain incompatible changes
 
 ## Usage
 
